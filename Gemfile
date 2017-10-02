@@ -4,4 +4,3 @@ git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 
 # Specify your gem's dependencies in capistrano_sync_dev.gemspec
 gemspec
-gem 'pry'
