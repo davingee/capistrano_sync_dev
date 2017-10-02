@@ -1,8 +1,4 @@
 namespace :sync do
-  
-  def download_tables(args={})
-    %x(mysql -u#{ fetch(:sync_to)[ 'username' ] } #{ to_password } -h #{ to_host } #{ fetch(:sync_to)[ 'database' ] } -e 'SHOW TABLES').split(/\n/)
-  end
 
   desc 'sync db to some env'
   task :db do
@@ -25,7 +21,7 @@ namespace :sync do
         to_host               = fetch(:sync_to)[ 'host' ].nil? ? 'localhost' : fetch(:sync_to)['host']
         alterations           = !fetch(:sync_table).nil?
 
-        if !test("[ -f #{ file }.sql]") || fetch(:sync_from_file)
+        if !File.file?("#{file}.sql") && fetch(:sync_from_file)
           # table         = ENV['table'].nil? ? "" : ENV['table'] # get only a specific table
           ignore_tables = []
           fetch(:sync_ignor_tables).each{|i| ignore_tables << "--ignore-table=#{ fetch(:sync_from)[ 'database' ] }.#{ i }" } unless alterations
